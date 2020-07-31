@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Component</title>
+    <style>
+        .header {
+            background-color: violet;
+        }
+        .footer {
+            background-color : aqua;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id = "app">
+        <my-app-header></my-app-header>
+        <h3>{{message}}</h3>
+        <main-table></main-table>
+        <my-app-footer></my-app-footer>
+    </div>
+   
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script>
+        Vue.component('my-app-footer',{
+            template : '<div class = "footer">전역컴포넌트로 추가한 풋터</div>'
+        }) 
+
+        Vue.component('my-app-header',{
+            template : '<div class = "header">전역컴포넌트로 추가한 헤더</div>'
+        });
+
+        const table = { template : '<table><tbody><tr><td>테이블 제목</td><td>테이블 내용</td></tr><tr><td>vue</td><td>컴포넌트 관련 내용들 </td></tr></tbody></table>'};
+
+        // 컴포넌트는 template 키 값을 인식하여 값을 주입하는 것이므로 값은 반드시 key(template) : value와 같은 식으로 생성하여야 함
+   
+        new Vue({
+            el: "#app",
+            data : { 
+                message : "전역 컴포넌트 방식으로 헤더와 풋터 등록하기" 
+            },
+            components : {
+                'main-table' : table
+            },
+        });
+    </script>    
+</body>
+</html>
