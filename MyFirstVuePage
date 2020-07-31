@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Vue.js Page</title>
+</head>
+<body>
+    <div id = "app">
+        {{ message }}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data : { message : 'Hello Vue.js!',
+                     changeCount : 0 },
+            beforeCreate : function() {
+                console.log("beforeCreate, 이 단계에서는 this.message에 접근할 수 없음");
+            },
+            created :function() {
+                console.log("created, 이 부분부터 this.message에 접근할 수 있음");
+                console.log("created에서 접근한 this.message:" + this.message)
+            },
+            beforeMount : function(){
+              console.log("beforeMount")
+              this.message = 'Message is...';
+              console.log("beforeMount에서 접근한 this.message:" + this.message)
+              this.changeCount++;
+            },
+            mounted : function(){
+                console.log("mounted");
+                this.message = 'Changing Message!';
+                console.log("mounted에서 접근한 this.message:" + this.message)
+                this.changeCount++;
+            },
+            updated : function() {
+                console.log("updated");
+                console.log("updated된 횟수 :" + this.changeCount);
+            }
+        });
+    </script>
+</body>
+</html>
