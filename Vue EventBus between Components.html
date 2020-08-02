@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <div id = "app">
+        <child-component></child-component>
+    </div>
+<script>
+    /* 관계없는 컴포넌트 간 통신을 위한 이벤트 버스 */
+    /*
+        이벤트 버스란?
+        - 개발자가 지정한 2개의 컴포넌트간에 데이터를 주고받을 수 있는 방법
+        - 이벤트 버스를 이용하면 상하위 관계가 없어도 데이터를 주고받을 수 있다
+        - 웹앱이 커져 컴포넌트가 많아지면 최상위 컴포넌트까지 올라가서 이벤트를 호출해야 하므로 비효율적임
+        - 이벤트버스는 Vue 인스턴스를 새로 생성하여야하며 이벤트를 보내는 컴포넌트는 $emit으로 호출하며 받는 객체는 $on으로 받아야한다
+    
+    */ 
+
+    // 1. 이벤트버스를 초기화
+    const eventBus = new Vue();
+    
+    // 2. 하위 컴포넌트에서 eventBus를 호출('이벤트명', value)하고 결과적으로 onClick = 'triggerEventBus'를 발생시킴
+    Vue.component('child-component', {
+        template : '<div>하위 컴포넌트 영역입니다.<button v-on:click="showLog">show</button></div>',
+        methods : {
+            showLog:function(){
+                eventBus.$emit('triggerEventBus', 100);
+            }
+        }
+    })
+
+    // 3. 'triggerEventBus'가 $emit되었을 때 $on으로 'triggerEventBus'를 발생시키며 이 때 전달받은 value값(100)이 표시됨
+    const app = new Vue({
+        el : '#app',
+        created: function(){
+          eventBus.$on('triggerEventBus', function(value){
+              console.log("이벤트를 전달 받음. 전달받은 값 : ", value);
+          })  
+        }
+    }) 
+</script>
+</body>
+</html>
